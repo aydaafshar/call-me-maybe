@@ -1,5 +1,3 @@
-"""Command-line entry point for the function-calling tool."""
-
 from __future__ import annotations
 
 import argparse
@@ -10,7 +8,7 @@ from src.pipeline import run
 
 
 def build_parser() -> argparse.ArgumentParser:
-    """Build the command-line parser."""
+
     parser = argparse.ArgumentParser(
         description="Convert prompts into structured function calls."
     )
@@ -38,7 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
-    """Run the command-line application."""
+
     args = build_parser().parse_args()
     try:
         run(

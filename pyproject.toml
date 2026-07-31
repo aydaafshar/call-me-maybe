@@ -16,10 +16,15 @@ dependencies = [
 dev = [
     "flake8>=7.0.0",
     "mypy>=1.10.0",
+    "pytest>=9.1.1",
 ]
 
 [tool.uv]
 package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
 
 [tool.flake8]
 exclude = [".git", ".venv", "__pycache__", ".mypy_cache", "data/output"]
@@ -27,6 +32,11 @@ max-line-length = 88
 
 [tool.mypy]
 exclude = ["^\\.venv/", "^data/output/", "^llm_sdk/"]
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+check_untyped_defs = true
 
 [[tool.mypy.overrides]]
 module = ["llm_sdk", "llm_sdk.*"]

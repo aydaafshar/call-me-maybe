@@ -1,4 +1,4 @@
-"""Application orchestration."""
+"""this is the main file that actualltr run the project."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ def generate_results(
     prompts: list[PromptCase],
     model_name: str,
 ) -> list[FunctionCall]:
-    """Generate function calls for all prompt cases."""
+
     if not functions or not prompts:
         return []
     model, vocabulary = create_model(model_name)
@@ -37,18 +37,26 @@ def generate_results(
     for prompt_case in prompts:
         try:
             results.append(
-                choose_function_call(model, vocabulary, prompt_case.prompt, functions)
+                choose_function_call(
+                    model, vocabulary, prompt_case.prompt, functions
+                )
             )
         except Exception as exc:
-            print(f"warning: generation failed for a prompt: {exc}", file=sys.stderr)
+            print(
+                f"warning: generation failed for prompt {prompt_case.prompt!r}: {exc}"
+                f" -- falling back to {functions[0].name!r} with default parameters",
+                file=sys.stderr,
+            )
             results.append(_fallback_call(prompt_case.prompt, functions[0]))
     return results
 
 
 def _fallback_call(prompt: str, function: FunctionDefinition) -> FunctionCall:
-    """Build a schema-valid placeholder call when generation fails unexpectedly."""
+    """if the proccess of building function fails, build a random function"""
     parameters = {
         name: default_for_type(definition.type)
         for name, definition in function.parameters.items()
     }
-    return FunctionCall(prompt=prompt, name=function.name, parameters=parameters)
+    return FunctionCall(
+        prompt=prompt, name=function.name, parameters=parameters
+    )

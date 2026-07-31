@@ -1,4 +1,6 @@
-"""Finite-choice constrained decoding."""
+"""This file lets the model choose only from predefined options by generating
+ one token at a time and.
+ eliminating impossible choices after each generated token."""
 
 from __future__ import annotations
 
@@ -36,7 +38,7 @@ def _best_next_literal_token(
     tokenized: list[list[int]],
     active: list[int],
 ) -> int:
-    """Choose the highest-logit token that keeps an option valid."""
+    """Choose the highest-logit token and to do this one we use set."""
     valid_next = {
         tokenized[i][len(generated)]
         for i in active
@@ -51,7 +53,7 @@ def _matching_options(
     active: list[int],
     generated: list[int],
 ) -> list[int]:
-    """Keep options that still match the generated prefix."""
+    """Keep options that still match. with de generated ones."""
     return [
         i
         for i in active

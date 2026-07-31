@@ -6,7 +6,8 @@ import re
 
 from src.token_io import decode, encode, get_logits
 
-MAX_VALUE_TOKENS = 64
+MAX_VALUE_TOKENS = 16
+MAX_NUMBER_DIGITS = 18
 _DIGIT_TOKEN = re.compile(r"^[0-9]+$")
 
 
@@ -43,6 +44,8 @@ def generate_number(
         if next_token == dot_token:
             seen_dot = True
         generated.append(next_token)
+        if _digit_count(decode(model, vocabulary, generated)) > MAX_NUMBER_DIGITS:
+            break
     number = _parse_number(decode(model, vocabulary, generated), seen_dot)
     return number, generated + stop_ids
 
@@ -86,12 +89,13 @@ def _number_options(
 ) -> set[int]:
     """Return tokens allowed by a simple JSON-number grammar."""
     has_digit = _has_digit(generated, digit_tokens)
+    ends_with_dot = bool(generated) and generated[-1] == dot_token
     options = set(digit_tokens)
     if step == 0:
         options.add(minus_token)
     if has_digit and not seen_dot and not integer_only:
         options.add(dot_token)
-    if has_digit:
+    if has_digit and not ends_with_dot:
         options.add(stop_token)
     return options
 
@@ -110,8 +114,15 @@ def _has_digit(generated: list[int], digit_tokens: set[int]) -> bool:
     return any(token_id in digit_tokens for token_id in generated)
 
 
+def _digit_count(text: str) -> int:
+    """Count digit characters in generated number text so far."""
+    return sum(1 for character in text if character.isdigit())
+
+
 def _parse_number(text: str, seen_dot: bool) -> object:
     """Parse generated JSON number text, falling back to zero."""
+    if _digit_count(text) > MAX_NUMBER_DIGITS:
+        return 0
     try:
         return float(text.strip()) if seen_dot else int(text.strip())
     except ValueError:

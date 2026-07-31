@@ -1,4 +1,4 @@
-"""Model construction and instruction-prompt preparation."""
+"""Bulid the model and prepring the prompts."""
 
 from __future__ import annotations
 
@@ -27,13 +27,13 @@ def choose_function_call(
     prompt: str,
     functions: list[FunctionDefinition],
 ) -> FunctionCall:
-    """Generate a schema-valid function call for one prompt."""
+    """Generate a valid function call for one prompt."""
     context_prompt = _selection_prompt(prompt, functions)
     return generate_function_call(model, vocabulary, context_prompt, prompt, functions)
 
 
 def _selection_prompt(prompt: str, functions: list[FunctionDefinition]) -> str:
-    """Build the natural-language context the model reasons over."""
+    """Build the natural-language context the model can understand it."""
     definitions = [
         {
             "name": function.name,
@@ -53,7 +53,8 @@ def _selection_prompt(prompt: str, functions: list[FunctionDefinition]) -> str:
 
 
 def _vocabulary_path(model: object) -> Path:
-    """Return a public SDK vocabulary path, accepting SDK version differences."""
+    """a vocabulary path can be diffrennt  so
+    Return a public SDK vocabulary path, accepting SDK version differences."""
     for method_name in (
         "get_path_to_vocab_file",
         "get_path_to_vocabulary_json",
