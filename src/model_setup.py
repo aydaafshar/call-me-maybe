@@ -15,7 +15,7 @@ from src.vocabulary import load_vocabulary
 
 
 def create_model(model_name: str) -> tuple[object, dict[int, str]]:
-    """Create the Small_LLM_Model wrapper and load its vocabulary."""
+
     model = Small_LLM_Model(model_name=model_name)
     vocabulary = load_vocabulary(_vocabulary_path(model))
     return model, vocabulary
@@ -29,7 +29,9 @@ def choose_function_call(
 ) -> FunctionCall:
     """Generate a valid function call for one prompt."""
     context_prompt = _selection_prompt(prompt, functions)
-    return generate_function_call(model, vocabulary, context_prompt, prompt, functions)
+    return generate_function_call(
+        model, vocabulary, context_prompt, prompt, functions
+    )
 
 
 def _selection_prompt(prompt: str, functions: list[FunctionDefinition]) -> str:

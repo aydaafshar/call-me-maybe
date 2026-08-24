@@ -62,7 +62,7 @@ def _best_number_token(
     seen_dot: bool,
     integer_only: bool,
 ) -> int:
-    """Choose the highest-logit token that keeps a JSON number valid."""
+
     options = _number_options(
         generated,
         digit_tokens,

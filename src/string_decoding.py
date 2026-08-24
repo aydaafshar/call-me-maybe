@@ -13,7 +13,7 @@ def generate_string(
     vocabulary: dict[int, str],
     separator: str,
 ) -> tuple[str, list[int]]:
-    """Generate free-form string content until the model closes the quote."""
+
     open_ids = encode(model, '"')
     close_ids = encode(model, '"' + separator)
     close_token = close_ids[0]
@@ -38,7 +38,7 @@ def is_repeating(
     max_period: int = 12,
     min_cycles: int = 3,
 ) -> bool:
-    """Detect a small-model generation loop repeating the same token cycle."""
+
     for period in range(1, max_period + 1):
         window = period * min_cycles
         if len(generated) < window:
@@ -67,7 +67,7 @@ def _best_string_token(
     safe_tokens: set[int],
     close_token: int,
 ) -> int:
-    """Choose the highest-logit valid string token."""
+
     logits = get_logits(model, context + generated)
     valid = set(safe_tokens)
     valid.add(close_token)

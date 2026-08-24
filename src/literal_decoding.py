@@ -1,6 +1,7 @@
-"""This file lets the model choose only from predefined options by generating
- one token at a time and.
- eliminating impossible choices after each generated token."""
+"""This file chooses only from predefined options.
+It tokenizes all possible options first.
+After every generated token, impossible options are removed.
+The model chooses the valid next token with the highest logit.."""
 
 from __future__ import annotations
 
@@ -53,7 +54,7 @@ def _matching_options(
     active: list[int],
     generated: list[int],
 ) -> list[int]:
-    """Keep options that still match. with de generated ones."""
+    """remove the impossible options."""
     return [
         i
         for i in active

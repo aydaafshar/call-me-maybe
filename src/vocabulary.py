@@ -1,4 +1,7 @@
-"""Vocabulary loading for constrained decoding."""
+"""Vocabulary loading for constrained decoding.
+The vocabulary connects token IDs to text.
+It supports different vocabulary file formats.
+"""
 
 from __future__ import annotations
 

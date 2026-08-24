@@ -19,7 +19,7 @@ def generate_function_call(
     prompt: str,
     functions: list[FunctionDefinition],
 ) -> FunctionCall:
-    """Generate one schema-valid function call via constrained decoding."""
+
     ids = encode(model, context_prompt)
     ids += encode(model, '{"prompt":' + json.dumps(prompt) + ',"name":"')
     name, name_ids = choose_literal(model, ids, [fn.name for fn in functions])
@@ -88,5 +88,5 @@ def _generate_value(
 
 
 def _json_literals(values: list[object]) -> list[str]:
-    """Serialize enum values as JSON literals."""
+    """converts enum values into valid JSON text."""
     return [json.dumps(value, ensure_ascii=False) for value in values]

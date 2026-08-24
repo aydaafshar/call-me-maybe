@@ -55,12 +55,21 @@ def write_results(path: Path, calls: list[FunctionCall]) -> None:
 def _load_array(path: Path) -> list[object]:
     """Load a JSON array, returning an empty list for malformed input."""
     if not path.exists():
+        print(f"Error: file not found: {path}")
         return []
+
     try:
         with path.open("r", encoding="utf-8") as input_file:
             data = json.load(input_file)
-    except (OSError, json.JSONDecodeError):
+    except json.JSONDecodeError:
+        print(f"Error: invalid JSON in file: {path}")
         return []
+    except OSError as error:
+        print(f"Error: could not read file {path}: {error}")
+        return []
+
     if not isinstance(data, list):
+        print(f"Error: expected a JSON array in file: {path}")
         return []
+
     return data

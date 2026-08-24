@@ -1,4 +1,9 @@
-"""Pydantic models for input definitions and output calls."""
+"""
+This file defines the structure of the project data.
+It uses Pydantic models to validate the data.
+It defines things like functions, prompts, and function calls.
+It makes sure the data has the correct type and format.
+"""
 
 from __future__ import annotations
 
@@ -6,12 +11,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-
 JsonType = Literal["number", "integer", "string", "boolean", "array", "object"]
 
 
 class ParameterDefinition(BaseModel):
-    """Definition for one function parameter."""
 
     model_config = ConfigDict(extra="allow")
 
@@ -20,7 +23,6 @@ class ParameterDefinition(BaseModel):
 
 
 class FunctionDefinition(BaseModel):
-    """Definition for one callable function."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -39,7 +41,6 @@ class FunctionDefinition(BaseModel):
 
 
 class PromptCase(BaseModel):
-    """Input prompt case."""
 
     model_config = ConfigDict(extra="ignore")
 
@@ -47,7 +48,6 @@ class PromptCase(BaseModel):
 
 
 class FunctionCall(BaseModel):
-    """Schema-compliant output function call."""
 
     model_config = ConfigDict(extra="forbid")
 

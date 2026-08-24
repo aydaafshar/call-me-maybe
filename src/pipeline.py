@@ -1,4 +1,4 @@
-"""this is the main file that actualltr run the project."""
+"""this is the main file that run the project."""
 
 from __future__ import annotations
 
