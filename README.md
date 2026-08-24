@@ -219,11 +219,4 @@ Manual testing should include:
 - uv documentation
 - Qwen model family documentation
 
-The application code interacts with the model only through the public
-`llm_sdk.Small_LLM_Model` methods required by the subject. Model runtime
-dependencies such as `torch`, `transformers`, and `huggingface-hub` are present
-because the provided `llm_sdk` package needs them internally.
-
-AI was used to help scaffold the repository, review the subject requirements,
-improve code readability, and generate documentation. The implementation should
-still be read, tested, and understood before peer evaluation.
+AI was used to help understand the subject requirements and clarify how to approach and implement the project.
